@@ -6,39 +6,48 @@
   </head>
 
   <body>
-    <h1>Hello, Snaps!</h1>
+    <h1>Solana on Metamask (Testnet)</h1>
     <details>
       <summary>Instructions</summary>
       <ul>
+        <li><b>Requires Metamask Flask</b> which may require uninstalling metamask</li>
+        <li>On launch this will work with noraml metamask</li>
         <li>First, click "Connect". Then, try out the other buttons!</li>
-        <li>Please note that:</li>
-        <ul>
-          <li>
-            The <code>snap.manifest.json</code> and <code>package.json</code> must be located in the server root directory..
-          </li>
-          <li>
-            The Snap bundle must be hosted at the location specified by the <code>location</code> field of <code>snap.manifest.json</code>.
-          </li>
-        </ul>
       </ul>
     </details>
     <br/>
 
     <button class="connect">Connect</button>
-    <button class="sendHello">Send Hello</button>
-    <button class="getBalacne">Get Balance</button>
+    <button class="getAddress">display Address</button>
+    <button class="getBalance">Get Balance</button>
+    <button class="getAccountInfo">get Account Info</button>
+    <p id="address"></p>
+    <br/>
+    <br/>
+    <p>address</p>
+    
+    <input value="DYw8jCTfwHNRJhhmFcbXvVDTqWMEVFBX6ZKUmG5CNSKK" style="width:500px;" class="sendAddress"/>
+    <br>
+    <p>amount (lamports)</p>
+    <input value="1000" step="1" min="0" type="number" class="sendAmount"/>
+    <button  id="sendButton">Send</button>
+    <br/>
+    <p id="info"></p>
   </body>
 
   <script>
     const snapId = `local:${window.location.href}`;
 
     const connectButton = document.querySelector('button.connect')
-    const sendButton = document.querySelector('button.sendHello')
-    const getBalanceButton = document.querySelector('button.getBalacne')
-
+    const addressButton = document.querySelector('button.getAddress')
+    const getBalanceButton = document.querySelector('button.getBalance')
+    const sendButton = document.querySelector('button#sendButton')
+    const getAccountInfoButton = document.querySelector('button.getAccountInfo')
     connectButton.addEventListener('click', connect)
-    sendButton.addEventListener('click', send)
+    addressButton.addEventListener('click', getAddress)
     getBalanceButton.addEventListener('click', getBalance)
+    sendButton.addEventListener('click', transfer)
+    getAccountInfoButton.addEventListener('click', getAccountInfo)
 
     // here we get permissions to interact with and install the snap
     async function connect () {
@@ -51,7 +60,7 @@
     }
 
     // here we call the snap's "hello" method
-    async function send () {
+    async function getAddress () {
       try {
         const response = await ethereum.request({
           method: 'wallet_invokeSnap',
@@ -59,7 +68,7 @@
             method: 'getAddress'
           }]
         })
-        console.log(response)
+        document.getElementById("address").innerHTML = response + "<br/><br/> <a target='_blank' href='https://solfaucet.com/'>https://solfaucet.com/</a><br/>please wait a moment for transaction to process before checking balance";
       } catch (err) {
         console.error(err)
         alert('Problem happened: ' + err.message || err)
@@ -74,8 +83,42 @@
             method: 'getBalance'
           }]
         })
-        console.log(response)
+        alert("balance is: "+response);
       } catch (err) {
+        console.error(err)
+        alert('Problem happened: ' + err.message || err)
+      }      
+    }
+
+    async function getAccountInfo(){
+      const response = await ethereum.request({
+          method: 'wallet_invokeSnap',
+          params: [snapId, {
+            method: 'getAccountInfo'
+          }]
+      })
+      console.log(response);
+      document.getElementById('info').innerHTML = JSON.stringify(response);
+    }
+
+    async function transfer(){
+      console.log("transfer")
+      try {
+        document.getElementById('info').innerHTML = "sending... please wait...";
+        const response = await ethereum.request({
+          method: 'wallet_invokeSnap',
+          params: [snapId, {
+            method: 'transfer',
+            params: {
+              to: document.querySelector('.sendAddress').value,
+              amount: document.querySelector('.sendAmount').value
+            }
+          }]
+        })
+        document.getElementById('info').innerHTML = "";
+        alert("transfer is: "+response);
+      } catch (err) {
+        document.getElementById('info').innerHTML = "";
         console.error(err)
         alert('Problem happened: ' + err.message || err)
       }      
