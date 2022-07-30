@@ -1,7 +1,7 @@
 {
-  "version": "0.7.0",
-  "proposedName": "MetaMask Template Snap",
-  "description": "A MetaMask Snap template.",
+  "version": "0.0.1",
+  "proposedName": "solana",
+  "description": "A solana wallet on metamask",
   "repository": {
     "type": "git",
     "url": "https://github.com/Kyraview/snapSolana.git"
@@ -12,7 +12,7 @@
       "npm": {
         "filePath": "dist/bundle.js",
         "iconPath": "images/icon.svg",
-        "packageName": "@metamask/template-snap",
+        "packageName": "snap-solana",
         "registry": "https://registry.npmjs.org/"
       }
     }

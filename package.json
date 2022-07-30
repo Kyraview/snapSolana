@@ -1,7 +1,7 @@
 {
-  "name": "@metamask/template-snap",
-  "version": "0.7.0",
-  "description": "The 'Hello, world!' of MetaMask Snaps.",
+  "name": "snap-solana",
+  "version": "0.0.1",
+  "description": "solana on metamask",
   "repository": {
     "type": "git",
     "url": "https://github.com/Kyraview/snapSolana.git"
@@ -50,6 +50,7 @@
     "node": ">=14.0.0"
   },
   "dependencies": {
-    "@metamask/key-tree": "^4.0.0"
+    "@metamask/key-tree": "^4.0.0",
+    "@solana/web3.js": "^1.50.1"
   }
 }
