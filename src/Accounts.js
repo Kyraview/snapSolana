@@ -90,7 +90,7 @@ export default class Accounts{
         if(state === null || state.Accounts.length === 0){
             return await this.createNewAccount("Account 1");
         }
-        const accountPath = state[state.currentAccount].path;
+        const accountPath = state.Accounts[state.currentAccount].path;
         return await this.generateAccount(accountPath);
     }
 
@@ -113,6 +113,6 @@ export default class Accounts{
             method: 'snap_manageState',
             params: ['get'],
         });
-        return state;
+        return state.Accounts;
     }
 }
