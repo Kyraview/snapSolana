@@ -28,6 +28,8 @@ module.exports.onRpcRequest = async ({origin, request})  => {
       return 'getTransactions not yet supported'
     case 'getAccounts':
       return await accounts.getAccounts();
+    case 'setAccount':
+      return await accounts.setCurrentAccount(request.params.address);
     case 'getAccountInfo':
       return JSON.stringify(await connection.getAccountInfo(walletPair.publicKey));
     default:

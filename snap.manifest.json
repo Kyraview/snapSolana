@@ -1,5 +1,5 @@
 {
-  "version": "0.0.8",
+  "version": "0.0.9",
   "proposedName": "solana",
   "description": "A solana wallet on metamask",
   "repository": {
@@ -7,7 +7,7 @@
     "url": "https://github.com/Kyraview/snapSolana.git"
   },
   "source": {
-    "shasum": "yuaCrTgrl6LFrNl1ozjFDpHsYXowKIP5DEiFhxou69U=",
+    "shasum": "75dyaYEfuTDW5g8ITJn/tkt5w6uII4jr9XQCHkw7YL0=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
