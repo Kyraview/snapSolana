@@ -1,6 +1,6 @@
 {
   "name": "snap-solana",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "solana on metamask",
   "repository": {
     "type": "git",

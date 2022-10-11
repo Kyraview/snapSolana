@@ -4,7 +4,7 @@ import Accounts from './Accounts';
 import Actions from './Actions';
 
 module.exports.onRpcRequest = async ({origin, request})  => {
-
+  console.log(origin);
   const accounts = new Accounts(wallet);
   const walletPair = await accounts.generateAccount(2);
   const connection = new solana.Connection(solana.clusterApiUrl('testnet'));
@@ -22,6 +22,12 @@ module.exports.onRpcRequest = async ({origin, request})  => {
       return new solana.PublicKey(walletPair.publicKey).toString();
     case 'getBalance':
       return await connection.getBalance(walletPair.publicKey);
+    case 'getAssets':
+      return "getAssets not yet supported"
+    case 'getTransactions':
+      return 'getTransactions not yet supported'
+    case 'getAccounts':
+      return [new solana.PublicKey(walletPair.publicKey).toString()];
     case 'getAccountInfo':
       return JSON.stringify(await connection.getAccountInfo(walletPair.publicKey));
     default:
