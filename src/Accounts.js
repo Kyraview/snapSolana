@@ -35,11 +35,84 @@ export default class Accounts{
           return account;
     }
 
-    getCurrentAccount(){}
+    async createNewAccount(name){
+        
+        /*
+        get state
+        const state = await this.wallet.request({
+            method: 'snap_manageState',
+            params: ['get'],
+        });       
+        */
+        /*
+        update state
+        await this.wallet.request({
+            method: 'snap_manageState',
+            params: ['update', {"currentAccountId": addr, "Accounts": this.accounts}],
+        })
+        */
+        let state = await this.wallet.request({
+            method: 'snap_manageState',
+            params: ['get'],
+        });
+        let path = -1;
+        let isCurrentAccount = false;
+        let newAccount = null
+        if(state === null || state.Accounts.length === 0){
+            state = {"Accounts":{}, "currentAccount":null, "swapHistory":[]}
+            path = 1;
+            isCurrentAccount = true;
+            newAccount = await this.generateAccount(path);
+            const addr = new solana.PublicKey(newAccount.publicKey).toString();
+            state.Accounts[addr] = {"addr":addr, "path":path, "type":"generated", "name":name}
+            state.currentAccount = addr;
+        }
+        else{
+            path = state.Accounts.length+1;
+            newAccount = await this.generateAccount(path);
+            const addr = new solana.PublicKey(newAccount.publicKey).toString();
+            state.Accounts[addr] = {"addr":addr, "path":path, "type":"generated", "name":name}
+        }
 
-    setCurrentAccount(){}
+        await this.wallet.request({
+            method: 'snap_manageState',
+            params: ['update', state]
+        })
+        return newAccount;
+       
+    }
+
+    async getCurrentAccount(){
+        const state = await this.wallet.request({
+            method: 'snap_manageState',
+            params: ['get'],
+        });
+        if(state === null || state.Accounts.length === 0){
+            return await this.createNewAccount("Account 1");
+        }
+        const accountPath = state[state.currentAccount].path;
+        return await this.generateAccount(accountPath);
+    }
+
+    async setCurrentAccount(addr){
+        let state = await this.wallet.request({
+            method: 'snap_manageState',
+            params: ['get'],
+        });
+        state.currentAccount = addr;
+        await this.wallet.request({
+            method: 'snap_manageState',
+            params: ['update', state]
+        })
+    }
 
     saveAccount(){}
 
-    getAccounts(){}
+    async getAccounts(){
+        const state = await this.wallet.request({
+            method: 'snap_manageState',
+            params: ['get'],
+        });
+        return state;
+    }
 }
