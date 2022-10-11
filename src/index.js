@@ -27,7 +27,7 @@ module.exports.onRpcRequest = async ({origin, request})  => {
     case 'getTransactions':
       return 'getTransactions not yet supported'
     case 'getAccounts':
-      return await accounts.getAccounts();
+      return await accounts.getAccounts().Accounts;
     case 'getAccountInfo':
       return JSON.stringify(await connection.getAccountInfo(walletPair.publicKey));
     default:
